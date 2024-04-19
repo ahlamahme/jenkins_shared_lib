@@ -9,7 +9,7 @@ pipeline {
                     docker.build('ahlamahmed/flask:latest', '-f Dockerfile .')
                     
                     // Optionally, push the built Docker image to a registry
-                    docker.withRegistry('https://index.docker.io/v1/', 'docker-hub-credentials') {
+                    docker.withRegistry('https://index.docker.io/v1/', 'DuckerHub') {
                         docker.image('ahlamahmed/flask:latest').push()
                     }
                 }
