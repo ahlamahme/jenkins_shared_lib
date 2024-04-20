@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Deploy') {
             steps {
-                container('kubectl') {
+                container('minikube') {
                     sh "kubectl --kubeconfig=$KUBECONFIG apply -f deployment.yaml"
                 }
             }
