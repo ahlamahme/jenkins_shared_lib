@@ -8,7 +8,7 @@ pipeline {
     stages {
         stage('Apply Kubernetes Resources') {
             steps {
-                withCredentials([file(credentialsId: "${KUBECONFIG_FILE}", variable: 'KUBECONFIG_FILE')]) {
+                withCredentials([file(credentialsId: "${KUBECONFIG_FILE}", variable: 'config')]) {
                     sh "export KUBECONFIG=${KUBECONFIG_FILE} && kubectl apply -f ."
                 }
             }
