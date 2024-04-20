@@ -1,21 +1,15 @@
 pipeline {
-    agent {
-        kubernetes {
-            cloud 'kubernetes'
-            label 'jenkins'
-            defaultContainer 'jnlp'
-        }
-    }
+    agent any
     
     environment {
-        KUBECONFIG = credentials('kubeconfig')
+        KUBECONFIG_FILE = credentials('kubeconfig')
     }
     
     stages {
-        stage('Deploy') {
+        stage('Apply Kubernetes Resources') {
             steps {
-                container('kubectl') {
-                    sh "kubectl --kubeconfig=$KUBECONFIG apply -f deployment.yaml"
+                withCredentials([file(credentialsId: "${KUBECONFIG_FILE}", variable: 'KUBECONFIG_FILE')]) {
+                    sh "export KUBECONFIG=${KUBECONFIG_FILE} && kubectl apply -f ."
                 }
             }
         }
