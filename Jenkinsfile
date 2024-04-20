@@ -1,21 +1,15 @@
 pipeline {
     agent any
     
-    environment {
-        DOCKER_HUB_CREDENTIALS = credentials('DuckerHub')
-    }
-    
     stages {
         stage('Build Docker Image') {
             steps {
                 script {
-                    // Build the Docker image from the Dockerfile
-                    docker.build('ahlamahmed/flask:latest', '-f Dockerfile .')
+                    // Clone the GitHub repository containing the Dockerfile
+                    checkout([$class: 'GitSCM', branches: [[name: '*/main']], userRemoteConfigs: [[url: 'https://github.com/ahlamahme/jenkins_shared_lib.git']]])
                     
-                    // Optionally, push the built Docker image to Docker Hub
-                    docker.withRegistry('https://index.docker.io/v1/', DOCKER_HUB_CREDENTIALS) {
-                        docker.image('ahlamahmed/flask:latest').push()
-                    }
+                    // Build the Docker image
+                    docker.build('yourusername/yourimage:latest', '-f Dockerfile .')
                 }
             }
         }
