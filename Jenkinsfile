@@ -2,8 +2,6 @@ pipeline {
     agent any
     
     stages {
-       
-        
         stage('Build and Push Docker Image') {
             steps {
                 // Use withCredentials block to access Docker Hub credentials
@@ -25,14 +23,23 @@ pipeline {
             }
         }
         
+        stage('Start Minikube') {
+            steps {
+                script {
+                    def minikubeStatus = sh(script: 'minikube status --format="{{.MinikubeStatus}}"', returnStdout: true).trim()
+                    if (minikubeStatus != "Running") {
+                        sh "minikube start"
+                    }
+                }
+            }
+        }
+        
         stage('Apply Deployment') {
             steps {
                 sh "kubectl apply -f deployment.yaml"
             }
         }
 
-       
-        
         // Add more stages as needed
     }
 }
