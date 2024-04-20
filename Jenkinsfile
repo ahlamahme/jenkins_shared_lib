@@ -13,5 +13,15 @@ pipeline {
                 }
             }
         }
+        
+        stage('Deploy to Minikube') {
+            steps {
+                // Start Minikube
+                sh "minikube start"
+                
+                // Apply Kubernetes deployment manifest
+                sh "kubectl apply -f deployment.yaml"
+            }
+        }
     }
 }
