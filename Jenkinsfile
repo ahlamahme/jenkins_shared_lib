@@ -8,7 +8,7 @@ pipeline {
                 withCredentials([usernamePassword(credentialsId: 'DuckerHub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
                     // Execute Docker commands here
                     sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-                    sh "docker build -t your-image-name ."
+                    sh "docker build -t ahlamahmed/flask:latest ."
                     sh "docker push ahlamahmed/flask:latest"
                 }
             }
