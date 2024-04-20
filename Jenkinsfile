@@ -1,21 +1,15 @@
 pipeline {
-    agent {
-        kubernetes {
-            cloud 'kubernetes'
-            label 'jenkins-agent'
-            containerTemplate {
-                name 'kubectl'
-                image 'lachlanevenson/k8s-kubectl'
-                command 'cat'
-                tty true
-            }
-        }
+    agent any
+    
+    environment {
+        KUBECONFIG = credentials('kubeconfig')
     }
+    
     stages {
         stage('Apply Deployment') {
             steps {
                 container('kubectl') {
-                    sh "kubectl apply -f deployment.yaml"
+                    sh "kubectl --kubeconfig=$KUBECONFIG apply -f deployment.yaml"
                 }
             }
         }
