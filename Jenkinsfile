@@ -1,28 +1,15 @@
 pipeline {
-    agent {
-        kubernetes {
-            label 'jenkins'
-            defaultContainer 'jnlp'
-            yaml """
-apiVersion: v1
-kind: Pod
-spec:
-  containers:
-  - name: kubectl
-    image: lachlanevenson/k8s-kubectl
-    command:
-    - cat
-"""
-        }
+    agent any
+    
+    environment {
+        KUBECONFIG = credentials('kubeconfig')
     }
     
     stages {
-        stage('Apply Deployment') {
+        stage('Deploy') {
             steps {
                 container('kubectl') {
-                    withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
-                        sh "kubectl apply -f deployment.yaml --kubeconfig=$KUBECONFIG_FILE"
-                    }
+                    sh "kubectl --kubeconfig=$KUBECONFIG apply -f deployment.yaml"
                 }
             }
         }
