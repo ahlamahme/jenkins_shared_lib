@@ -2,6 +2,8 @@ pipeline {
     agent any
     
     stages {
+       
+        
         stage('Build and Push Docker Image') {
             steps {
                 // Use withCredentials block to access Docker Hub credentials
@@ -13,15 +15,24 @@ pipeline {
                 }
             }
         }
-        
-        stage('Deploy to Minikube') {
+
+        stage('Configure kubectl') {
             steps {
-                // Start Minikube
-                sh "minikube start"
-                
-                // Apply Kubernetes deployment manifest
+                // Set KUBECONFIG environment variable
+                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
+                    sh "export KUBECONFIG=$KUBECONFIG_FILE"
+                }
+            }
+        }
+        
+        stage('Apply Deployment') {
+            steps {
                 sh "kubectl apply -f deployment.yaml"
             }
         }
+
+       
+        
+        // Add more stages as needed
     }
 }
