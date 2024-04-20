@@ -1,5 +1,11 @@
 pipeline {
-    agent any
+    agent {
+        kubernetes {
+            cloud 'kubernetes'
+            label 'jenkins'
+            defaultContainer 'jnlp'
+        }
+    }
     
     environment {
         KUBECONFIG = credentials('kubeconfig')
@@ -8,7 +14,7 @@ pipeline {
     stages {
         stage('Deploy') {
             steps {
-                container('minikube') {
+                container('kubectl') {
                     sh "kubectl --kubeconfig=$KUBECONFIG apply -f deployment.yaml"
                 }
             }
