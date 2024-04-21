@@ -18,5 +18,8 @@ To use this pipeline script in your Jenkins environment, follow these steps:
 
 
 ![Image 1 Alt Text](img/pipline.png)
+
+# k8s deployment
+
 ![Image 2 Alt Text](img/runing_pod.png)
 
