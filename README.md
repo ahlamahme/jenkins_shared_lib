@@ -1,5 +1,6 @@
 # Jenkins Pipeline with Shared Library: Push and Deploy
 
+
 This Jenkins pipeline script demonstrates how to use a shared library called `push_deploy` to build and push a Docker image to Docker Hub, and then apply Kubernetes resources using a specified `kubeconfig` file.
 
 ## Usage
@@ -14,3 +15,8 @@ To use this pipeline script in your Jenkins environment, follow these steps:
 
    ```groovy
    @Library('push_deploy') _
+
+   
+![Image 1 Alt Text](img/pipline.png)
+![Image 2 Alt Text](img/runing_pod.png)
+
