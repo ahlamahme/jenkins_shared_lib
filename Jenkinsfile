@@ -1,33 +1,28 @@
+
+
+
+@Library('push_deploy') _
+
 pipeline {
     agent any
     
     stages {
         stage('Build and Push Docker Image') {
             steps {
-                // Use withCredentials block to access Docker Hub credentials
-                withCredentials([usernamePassword(credentialsId: 'DuckerHub', usernameVariable: 'DOCKER_USERNAME', passwordVariable: 'DOCKER_PASSWORD')]) {
-                    // Execute Docker commands here
-                    sh "docker login -u $DOCKER_USERNAME -p $DOCKER_PASSWORD"
-                    sh "docker build -t ahlamahmed/flask:latest ."
-                    sh "docker push ahlamahmed/flask:latest"
-                }
-           }
-        }
-        stage('Apply Kubernetes Resources') {
-            steps {
-                withCredentials([file(credentialsId: 'kubeconfig', variable: 'KUBECONFIG_FILE')]) {
-                    sh "export KUBECONFIG=${KUBECONFIG_FILE} && kubectl apply -f ."
+                script {
+                    // Call the function from the shared library to build and push Docker image
+                    push_deploy.buildAndPushDockerImage('DuckerHub')
                 }
             }
         }
-        // Add more stages as needed
-           }
-     post {
-        success {
-            echo "${JOB_NAME}-${BUILD_NUMBER} pipeline succeeded"
-        }
-        failure {
-            echo "${JOB_NAME}-${BUILD_NUMBER} pipeline failed"
+        
+        stage('Apply Kubernetes Resources') {
+            steps {
+                script {
+                    // Call the function from the shared library to apply Kubernetes resources
+                    push_deploy.applyKubernetesResources('kubeconfig')
+                }
+            }
         }
     }
 }
