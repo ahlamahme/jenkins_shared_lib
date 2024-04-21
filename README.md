@@ -27,9 +27,6 @@ This repository contains the Kubernetes YAML configuration file for deploying a 
 
 The `deployment.yaml` file in this repository defines a Kubernetes Deployment for running a Flask application.
 
-### Configuration Details
-
-The `deployment.yaml` file specifies the following configuration:
 
 ![Image 2 Alt Text](img/runing_pod.png)
 
