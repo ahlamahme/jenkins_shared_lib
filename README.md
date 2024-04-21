@@ -21,5 +21,15 @@ To use this pipeline script in your Jenkins environment, follow these steps:
 
 # k8s deployment
 
+This repository contains the Kubernetes YAML configuration file for deploying a Flask application.
+
+## Deployment Configuration
+
+The `deployment.yaml` file in this repository defines a Kubernetes Deployment for running a Flask application.
+
+### Configuration Details
+
+The `deployment.yaml` file specifies the following configuration:
+
 ![Image 2 Alt Text](img/runing_pod.png)
 
